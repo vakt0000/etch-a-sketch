@@ -1,31 +1,36 @@
 const container = document.createElement("div");
-container.style.backgroundColor = "blue"
 container.style.display = "flex";
 container.style.flexDirection = "column";
 container.style.alignItems = "strech";
 container.style.justifyContent = "center";
 document.querySelector("body").appendChild(container);
 
-
-
-/*
-divCollection.push(document.createElement("div"));
-container.appendChild(divCollection[0]);
-divCollection[0].style.backgroundColor= "red";
-divCollection[0].style.display = "flex";
-divCollection[0].style.width = "100%";
-*/
+const button = document.querySelector("#resetButton");
+button.addEventListener('click', reset);
 
 // We fill the square grid row by row
-// Each item in the array will be another array containing elements
+// Each row will be a div containing more divs
+
+function createInnerContainer() {
+  const auxContainer = document.createElement("div");
+  container.appendChild(auxContainer);
+  auxContainer.setAttribute('id', 'innerContainer');
+  auxContainer.style.display = "flex";
+  auxContainer.style.flexDirection = "column";
+  auxContainer.style.alignItems = "strech";
+  auxContainer.style.justifyContent = "center";
+  auxContainer.classList= "red";
+  return auxContainer;
+}
+
 function createSquareGrid(n) {
+  const containerInner = createInnerContainer();
   for(let i = 0; i < n; i++) {
     const divRow= document.createElement("div");
     divRow.classList = `row-${i}`;
     divRow.style.display = "flex";
     for(let k = 0; k < n; k++){
       const newDiv = document.createElement('div');
-      newDiv.style.backgroundColor = "red";
       newDiv.style.flexGrow = "1";
       newDiv.style.flexShrink = "1";
       newDiv.style.aspectRatio = "1/1";
@@ -34,13 +39,24 @@ function createSquareGrid(n) {
       newDiv.addEventListener('mouseout', changeColor);
       divRow.appendChild(newDiv);
     }
-    container.appendChild(divRow);
+    containerInner.appendChild(divRow);
   }
 }
 
 function changeColor() {
-  if(this.style.backgroundColor==="red") this.style.backgroundColor = "green";
-  else if(this.style.backgroundColor==="green") this.style.backgroundColor = "blue";
+  if(!this.classList.contains("green")) this.classList.toggle("green");
+  else {
+    this.classList.toggle("green");
+    this.classList.toggle("blue");
+    this.removeEventListener('mouseover', changeColor);
+    this.removeEventListener('mouseout', changeColor);
+  }
 }
  
-createSquareGrid(32);
+function reset() {
+  container.removeChild(container.lastChild);
+  let newSize = +prompt("Introduce the new size (max=100)", 14);
+  createSquareGrid(newSize);
+}
+
+createSquareGrid(4);
