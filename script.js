@@ -1,6 +1,11 @@
 const container = document.createElement("div");
 container.style.backgroundColor = "blue"
+container.style.display = "flex";
+container.style.flexDirection = "column";
+container.style.alignItems = "strech";
+container.style.justifyContent = "center";
 document.querySelector("body").appendChild(container);
+
 
 
 /*
@@ -19,23 +24,23 @@ function createSquareGrid(n) {
     divRow.classList = `row-${i}`;
     divRow.style.display = "flex";
     for(let k = 0; k < n; k++){
-      const newSpan = document.createElement('div');
-      newSpan.style.flexGrow = "0";
-      newSpan.style.flexShrink = "1";
-      newSpan.style.height = "30px";
-      newSpan.style.width = "30px";
-      newSpan.style.backgroundColor = "red";
-      newSpan.setAttribute('id', `#${k+(i)*n}`);
-      newSpan.addEventListener('mouseover', changeColor)
-      divRow.appendChild(newSpan);
+      const newDiv = document.createElement('div');
+      newDiv.style.backgroundColor = "red";
+      newDiv.style.flexGrow = "1";
+      newDiv.style.flexShrink = "1";
+      newDiv.style.aspectRatio = "1/1";
+      newDiv.setAttribute('id', `#${k+(i)*n}`);
+      newDiv.addEventListener('mouseover', changeColor);
+      newDiv.addEventListener('mouseout', changeColor);
+      divRow.appendChild(newDiv);
     }
     container.appendChild(divRow);
   }
 }
 
-function changeColor(e) {
-  console.log(this.getAttribute('id'));
-  this.style.backgroundColor = "green";
+function changeColor() {
+  if(this.style.backgroundColor==="red") this.style.backgroundColor = "green";
+  else if(this.style.backgroundColor==="green") this.style.backgroundColor = "blue";
 }
  
 createSquareGrid(32);
