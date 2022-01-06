@@ -55,7 +55,12 @@ function changeColor() {
  
 function reset() {
   container.removeChild(container.lastChild);
-  let newSize = +prompt("Introduce the new size (max=100)", 14);
+  let newSize = "";
+  do {
+    newSize = +prompt("Introduce the new size (max=100; min=2)", 14);
+    console.log(newSize > 100);
+    console.log(isNaN);
+  } while(isNaN(newSize) || newSize > 100 || newSize < 2);
   createSquareGrid(newSize);
 }
 
