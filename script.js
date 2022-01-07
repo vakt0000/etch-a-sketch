@@ -1,7 +1,5 @@
 const container = document.createElement("div");
 container.style.display = "flex";
-container.style.flexDirection = "column";
-container.style.alignItems = "strech";
 container.style.justifyContent = "center";
 document.querySelector("body").appendChild(container);
 
@@ -19,7 +17,11 @@ function createInnerContainer() {
   auxContainer.style.flexDirection = "column";
   auxContainer.style.alignItems = "strech";
   auxContainer.style.justifyContent = "center";
-  auxContainer.classList= "red";
+  auxContainer.style.aspectRatio = "1/1";
+  auxContainer.style.borderColor = "blue";
+  auxContainer.style.borderStyle = "solid";
+  auxContainer.style.flexGrow = "1";
+  auxContainer.style.maxWidth = "50%";
   return auxContainer;
 }
 
@@ -36,7 +38,6 @@ function createSquareGrid(n) {
       newDiv.style.aspectRatio = "1/1";
       newDiv.setAttribute('id', `#${k+(i)*n}`);
       newDiv.addEventListener('mouseover', changeColor);
-      newDiv.addEventListener('mouseout', changeColor);
       divRow.appendChild(newDiv);
     }
     containerInner.appendChild(divRow);
@@ -44,12 +45,25 @@ function createSquareGrid(n) {
 }
 
 function changeColor() {
-  if(!this.classList.contains("green")) this.classList.toggle("green");
+  console.log("hello")
+  if(this.style.backgroundColor === "") {
+    this.style.backgroundColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+  }
   else {
-    this.classList.toggle("green");
-    this.classList.toggle("blue");
-    this.removeEventListener('mouseover', changeColor);
-    this.removeEventListener('mouseout', changeColor);
+    let tempAux = this.style.backgroundColor;
+    tempAux = tempAux.slice(0, tempAux.length-1);
+    tempAux = tempAux.split("(");
+    let backgroundColorRGB = tempAux[1].split(",");
+    for (let i = 0; i < backgroundColorRGB.length; i++) {
+      backgroundColorRGB[i] = Math.floor(+backgroundColorRGB[i]-25.5);
+      if(backgroundColorRGB[i] < 0) backgroundColorRGB[i] = 0;
+    }
+    this.style.backgroundColor = `rgb(${backgroundColorRGB[0]}, ${backgroundColorRGB[1]}, ${backgroundColorRGB[2]})`;
+    if(backgroundColorRGB[0]=== 0 &&
+       backgroundColorRGB[1]=== 0 && 
+       backgroundColorRGB[2]=== 0) {
+      this.removeEventListener('mouseover', changeColor);
+    }
   }
 }
  
@@ -58,8 +72,6 @@ function reset() {
   let newSize = "";
   do {
     newSize = +prompt("Introduce the new size (max=100; min=2)", 14);
-    console.log(newSize > 100);
-    console.log(isNaN);
   } while(isNaN(newSize) || newSize > 100 || newSize < 2);
   createSquareGrid(newSize);
 }
