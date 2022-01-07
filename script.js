@@ -21,7 +21,7 @@ function createInnerContainer() {
   auxContainer.style.borderColor = "blue";
   auxContainer.style.borderStyle = "solid";
   auxContainer.style.flexGrow = "1";
-  auxContainer.style.maxWidth = "50%";
+  auxContainer.style.maxWidth = "40%";
   return auxContainer;
 }
 
